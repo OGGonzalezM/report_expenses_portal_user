@@ -73,11 +73,11 @@ class ImportProductImages(http.Controller):
                             }
                         )
                 if images_per_product > 0:
-                    return http.request.redirect('/page/import_product_images.images_success')
                     print ("\n Total images to load")
                     print (total_images)
                     print ("\n Images Loaded")
                     print (images_per_product)
+                    return http.request.redirect('/page/import_product_images.images_success')
                 else:
                     return http.request.redirect('/page/import_product_images.images_failed')
             except Exception as e:
