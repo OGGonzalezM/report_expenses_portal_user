@@ -37,8 +37,10 @@ class ImportProductImages(http.Controller):
             print ("There're no images to load")
         else:
             try:
+                total_images = 0
                 images_per_product = 0
                 for c_file in request.httprequest.files.getlist('product_images'):
+                    total_images += 1
                     image_data = c_file.read()
                     try:
                         image = Image.open(io.BytesIO(image_data))
@@ -58,7 +60,7 @@ class ImportProductImages(http.Controller):
 
                     product_obj = http.request.env['product.template'].sudo().search(
                         [
-                            ('default_code', '=', file_name_product)
+                            ('images_code', '=', file_name_product)
                         ]
                     )
 
@@ -72,6 +74,10 @@ class ImportProductImages(http.Controller):
                         )
                 if images_per_product > 0:
                     return http.request.redirect('/page/import_product_images.images_success')
+                    print ("\n Total images to load")
+                    print (total_images)
+                    print ("\n Images Loaded")
+                    print (images_per_product)
                 else:
                     return http.request.redirect('/page/import_product_images.images_failed')
             except Exception as e:

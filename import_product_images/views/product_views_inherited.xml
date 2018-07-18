@@ -9,6 +9,9 @@
 				<xpath expr="//field[@name='default_code']" position="attributes">
 					<attribute name="required">True</attribute>
 				</xpath>
+				<xpath expr="//field[@name='default_code']" position="after">
+					<field name="images_code" />
+				</xpath>
 			</field>
 		</record>
 	</data>
