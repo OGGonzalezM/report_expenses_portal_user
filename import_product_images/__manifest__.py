@@ -35,6 +35,7 @@
     'demo': [],
 
     'data': [
+        'security/ir.model.access.csv',
         'views/product_views_inherited.xml',
         'views/images_log_view.xml',
         'static/src/xml/website_resources.xml',
