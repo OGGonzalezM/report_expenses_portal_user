@@ -26,6 +26,7 @@
     'depends': [
         'base',
         'web',
+        'board',
         'website_form',
         'stock',
         'product',
@@ -35,6 +36,7 @@
 
     'data': [
         'views/product_views_inherited.xml',
+        'views/images_log_view.xml',
         'static/src/xml/website_resources.xml',
         'views/import_product_images_templates.xml',
         'views/data.xml',

@@ -37,26 +37,29 @@ class ImportProductImages(http.Controller):
             print ("There're no images to load")
         else:
             try:
+                user = http.request.env.user
+                language = user.lang
                 total_images = 0
                 images_per_product = 0
                 for c_file in request.httprequest.files.getlist('product_images'):
                     total_images += 1
                     image_data = c_file.read()
-                    try:
-                        image = Image.open(io.BytesIO(image_data))
-                        w, h = image.size
-                        if w*h > 42e6:
-                            raise ValueError(
-                                u"Image size excessive, uploaded images must be smaller "
-                                u"than 42 million pixel")
-                        if not disable_optimization and image.format in ('PNG', 'JPEG', 'JPG', 'GIF'):
-                            image_data = tools.image_save_for_web(image)
-                    except IOError as e:
-                        pass
 
-                    # Search product by internal reference
+                    # Search product by defined code
                     default_code = c_file.filename.split(".")
                     file_name_product = default_code[0].strip()
+                    imageslogs = http.request.env['images_log.log']
+                    if 'es' in language:
+                        msj_des = "Archivo cargado desde el sitio web"
+                    else:
+                        msj_des = "File loaded only to the frontend"
+
+                    log_id = imageslogs.sudo().create(
+                        {
+                            'name': c_file.filename,
+                            'description': msj_des
+                        }
+                    )
 
                     product_obj = http.request.env['product.template'].sudo().search(
                         [
@@ -64,12 +67,61 @@ class ImportProductImages(http.Controller):
                         ]
                     )
 
+                    print ("\n ID del log")
+                    print (log_id)
+
                     if product_obj:
                         images_per_product += 1
+                        existinglogs = imageslogs.sudo().search(
+                            [
+                                ('name', '=', c_file.filename)
+                            ]
+                        )
+
+                        if existinglogs[0]:
+                            if 'es' in language:
+                                mymsj = ", - Imagen mediana actualizada"
+                            else:
+                                mymsj = ", - Medium image updated"
+
+                            log_id.sudo().write(
+                                {
+                                    'product_id': product_obj.id,
+                                    'success_load': True,
+                                    'description': existinglogs.description + 
+                                    str(mymsj)
+                                }
+                            )
+
+                        else:
+                            if 'es' in language:
+                                mymsj = "La imagen mediana fue asignada al producto"
+                            else:
+                                mymsj = "Medium image was set for the product"
+                            log_id.sudo().write(
+                                {
+                                    'product_id': product_obj.id,
+                                    'success_load': True,
+                                    'description': mymsj
+                                }
+                            )
                         processed_image = base64.b64encode(image_data)
                         product_obj.sudo().write(
                             {
                                 'image_medium': processed_image
+                            }
+                        )
+                    else:
+                        if 'es' in language:
+                            mymsj2 = "Esta imagen no fue cargada debido a que no " \
+                                     "concuerda con el nombre de algun producto "
+                        else:
+                            mymsj2 = "This image wasnt loaded, doesnt exist a product with that name"
+
+                        log_id.sudo().write(
+                            {
+                                'success_load': False,
+                                'description': mymsj2
                             }
                         )
                 if images_per_product > 0:
