@@ -38,7 +38,6 @@ class RegisterExpenseControllers(http.Controller):
                 ('id', 'in', projects_ids)
             ]
         )
-        print (projects)
 
         products = http.request.env['product.product'].sudo().search(
             [
@@ -74,11 +73,8 @@ class RegisterExpenseControllers(http.Controller):
         x_project_id = kw.get('x_project_id')
         employee_id = kw.get('employee_id')
         expense_report = kw.get('x_report_expense_id')
-        print ("\n -*-*-*-*-*-Valor")
-        print (expense_report)
 
         if expense_report != "other":
-            print ("\n *-*-*--*/-*/-*/Direferente de otro")
             expense_data = {
                 'name': name,
                 'product_id': product_id,
@@ -105,17 +101,12 @@ class RegisterExpenseControllers(http.Controller):
                 'employee_id': int(employee_id),
             }
             expense_record = http.request.env['hr.expense'].sudo().create(expense_data)
-            print ("\n ****************************Registro de gasto creado")
-            print(expense_record)
 
             expense_register = http.request.env['ops4g_expenses.reports'].sudo().create(
                 {
                     'name': x_expense_report,
                 }
             )
-
-            print ("*************************My expense register")
-            print (expense_register)
 
             expense_record.sudo().write(
                 {
