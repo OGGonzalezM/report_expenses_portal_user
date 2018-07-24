@@ -1,15 +1,3 @@
-odoo.define('report_expenses_portal_user.register_expenses', function (require) {
-    'use strict';
-
-  require('web.dom_ready');
-  var core = require('web.core');
-
-  $('.select2_control').select2({
-
-  });
-
-});
-
 $(function(){
   var name_desc = $('#name_desc'),
   project = $('#x_project_id'),
@@ -49,6 +37,17 @@ $(function(){
             $('#voucher_file').addClass("my-success");
             $('#result_custom').addClass("hidden");
         }
+    }
+
+  });
+
+  $('#x_report_expense_id').change(function(){
+    if ( $('#x_report_expense_id').val() == "other" ){
+      $('#inerCreate').removeClass("hidden");
+      $('#inerCreate').attr("required", "required");
+    }else {
+      $('#inerCreate').addClass("hidden");
+      $('#inerCreate').removeAttr('required');
     }
   });
 

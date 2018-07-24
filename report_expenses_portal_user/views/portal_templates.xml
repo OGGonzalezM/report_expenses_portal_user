@@ -27,7 +27,7 @@
 
                                 <div class="row">
                                     <div class="form-group" >
-                                        <label for="name">Expense Description</label>
+                                        <label class="control-label" for="name">Expense Description</label>
                                         <input type="text" name="name" class="form-control o_website_form_input" id="name_desc" required="1" placeholder="ej. Main travel" />
                                         <span id="errorName"/>
                                     </div>
@@ -38,7 +38,7 @@
                                 <div class="row">
                                     <div class="form-group">
                                         <label for="x_project_id">Project</label>
-                                        <select name="x_project_id" id="x_project_id" class="form-control select2_control">
+                                        <select name="x_project_id" id="x_project_id" class="form-control">
                                             <t t-if="projects">
                                                 <option value="">Select a project</option>
                                                 <t t-foreach="projects" t-as="project">
@@ -57,7 +57,7 @@
                                 <div class="row">
                                     <div class="form-group">
                                         <label for="product_id">Product</label>
-                                        <select name="product_id" id="product_id" class="form-control select2_control" required="1">
+                                        <select name="product_id" id="product_id" class="form-control" required="1">
                                             <t t-if="products">
                                                 <option value="">Select a product expensed</option>
                                                 <t t-foreach="products" t-as="product">
@@ -70,6 +70,28 @@
                                                 <option value="">We're sorry, you can't register a expense</option>
                                             </t>
                                             <span id="errorProduct"/>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="x_report_expense_id">Expense Report</label>
+                                        <select name="x_report_expense_id" id="x_report_expense_id" class="form-control" required="1">
+                                            <t t-if="expense_reports">
+                                                <option value="">Select a expense report</option>
+                                                <t t-foreach="expense_reports" t-as="expense_report">
+                                                    <option t-att-value="expense_report.id">
+                                                        <t t-esc="expense_report.name" />
+                                                    </option>
+                                                    <option value="other">Other</option>
+                                                </t>
+                                            </t>
+                                            <t t-else="" >
+                                                <option value="">We're sorry, there aren't expense reports created, but you can create one </option>
+                                            </t>
+                                            <!-- To create a new expense report -->
+                                            <input type="text" class="form-control hidden" id="inerCreate" name="expensereport_create" placeholder="Create a new Expense Report"/>
                                         </select>
                                     </div>
                                 </div>

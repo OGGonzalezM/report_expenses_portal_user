@@ -46,6 +46,8 @@ class RegisterExpenseControllers(http.Controller):
             ]
         )
 
+        expense_reports = http.request.env['ops4g_expenses.reports'].sudo().search([])
+
         return http.request.render(
             'report_expenses_portal_user.s4g_register_expense',
             {
@@ -53,6 +55,7 @@ class RegisterExpenseControllers(http.Controller):
                 'products': products,
                 'user': user,
                 'employee_obj': employee_obj,
+                'expense_reports': expense_reports,
             }
         )
 
@@ -70,19 +73,55 @@ class RegisterExpenseControllers(http.Controller):
         date = kw.get('date')
         x_project_id = kw.get('x_project_id')
         employee_id = kw.get('employee_id')
+        expense_report = kw.get('x_report_expense_id')
+        print ("\n -*-*-*-*-*-Valor")
+        print (expense_report)
 
-        expense_data = {
-            'name': name,
-            'product_id': product_id,
-            'unit_amount': unit_amount,
-            'quantity': quantity,
-            'reference': reference,
-            'date': date,
-            'x_project_id': x_project_id,
-            'employee_id': int(employee_id),
-        }
+        if expense_report != "other":
+            print ("\n *-*-*--*/-*/-*/Direferente de otro")
+            expense_data = {
+                'name': name,
+                'product_id': product_id,
+                'unit_amount': unit_amount,
+                'quantity': quantity,
+                'reference': reference,
+                'date': date,
+                'x_project_id': x_project_id,
+                'employee_id': int(employee_id),
+                'x_report_expense_id': expense_report,
+            }
+            expense_record = http.request.env['hr.expense'].sudo().create(expense_data)
+        else:
+            x_expense_report = kw.get('expensereport_create')
 
-        expense_record = http.request.env['hr.expense'].sudo().create(expense_data)
+            expense_data = {
+                'name': name,
+                'product_id': product_id,
+                'unit_amount': unit_amount,
+                'quantity': quantity,
+                'reference': reference,
+                'date': date,
+                'x_project_id': x_project_id,
+                'employee_id': int(employee_id),
+            }
+            expense_record = http.request.env['hr.expense'].sudo().create(expense_data)
+            print ("\n ****************************Registro de gasto creado")
+            print(expense_record)
+
+            expense_register = http.request.env['ops4g_expenses.reports'].sudo().create(
+                {
+                    'name': x_expense_report,
+                }
+            )
+
+            print ("*************************My expense register")
+            print (expense_register)
+
+            expense_record.sudo().write(
+                {
+                    'x_report_expense_id': expense_register.id
+                }
+            )
 
         if kw.get('Voucher', False):
             attachments = request.env['ir.attachment']

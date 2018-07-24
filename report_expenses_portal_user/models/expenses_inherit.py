@@ -16,3 +16,8 @@ class ExpensesInheritedFrontend(models.Model):
         'project.project',
         string="Project"
     )
+
+    x_report_expense_id = fields.Many2one(
+        'ops4g_expenses.reports',
+        string="Expense Report"
+    )

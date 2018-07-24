@@ -10,6 +10,10 @@
                 <xpath expr="//field[@name='product_id']" position="before">
                     <field name="x_project_id" />
                 </xpath>
+
+                <xpath expr="//field[@name='tax_ids']" position="after">
+                    <field name="x_report_expense_id" />
+                </xpath>
             </field>
         </record>
     </data>

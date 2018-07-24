@@ -32,6 +32,7 @@
     'demo': [],
 
     'data': [
+        'views/expenses_reports_view.xml',
         'data/website_data.xml',
         'views/expense_inherit_view.xml',
         'views/project_inherit_view.xml',
