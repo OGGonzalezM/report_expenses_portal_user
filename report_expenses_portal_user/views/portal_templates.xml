@@ -89,6 +89,7 @@
                                             </t>
                                             <t t-else="" >
                                                 <option value="">We're sorry, there aren't expense reports created, but you can create one </option>
+                                                <option value="other">Other</option>
                                             </t>
                                             <!-- To create a new expense report -->
                                             <input type="text" class="form-control hidden" id="inerCreate" name="expensereport_create" placeholder="Create a new Expense Report"/>
