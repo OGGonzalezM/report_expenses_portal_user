@@ -86,7 +86,7 @@ class ImportProductImages(http.Controller):
 
                             log_id.sudo().write(
                                 {
-                                    'product_id': product_obj.id,
+                                    'product_id': product_obj[0].id,
                                     'success_load': True,
                                     'description': existinglogs[0].description + 
                                     str(mymsj)
