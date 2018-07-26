@@ -88,7 +88,7 @@ class ImportProductImages(http.Controller):
                                 {
                                     'product_id': product_obj.id,
                                     'success_load': True,
-                                    'description': existinglogs.description + 
+                                    'description': existinglogs[0].description + 
                                     str(mymsj)
                                 }
                             )
