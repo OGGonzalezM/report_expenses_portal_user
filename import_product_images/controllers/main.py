@@ -47,7 +47,7 @@ class ImportProductImages(http.Controller):
 
                     # Search product by defined code
                     default_code = c_file.filename.split(".")
-                    file_name_product = default_code[0].strip()
+                    file_name_product = default_code[0]
                     imageslogs = http.request.env['images_log.log']
                     if 'es' in language:
                         msj_des = "Archivo cargado desde el sitio web"
