@@ -11,7 +11,7 @@
     'description':
         """
             * A employee has a portal user, this user can report expenses it is related to a project.
-            *When a expense register doesn't exist a user can create it from a field.
+            * When a expense register doesn't exist a user can create it from a field.
         """,
 
     'author': "Soluciones4G - OGM",
@@ -27,7 +27,8 @@
         'website_form',
         'hr_expense',
         'project',
-        'product'
+        'product',
+        'contacts'
     ],
 
     'demo': [],
