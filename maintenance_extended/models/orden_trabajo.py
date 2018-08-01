@@ -11,7 +11,9 @@ class OrdenTrabajo(models.Model):
     _name = 'ops4g.orden_trabajo'
 
     name = fields.Char(
-        string=""
+        string="Nombre",
+        default=lambda self: 'OT000X',
+        required=True,
     )
 
     descripcion = fields.Char(
@@ -32,15 +34,17 @@ class OrdenTrabajo(models.Model):
 
     costo_horas_hombre = fields.Float(
         string="Costo horas hombre",
-        compute="get_costo_horashombre",
+        compute="get_subcostos",
     )
 
     costo_recursos = fields.Float(
         string="Costo recursos",
+        compute="get_subcostos"
     )
 
     costo_total = fields.Float(
-        string="Costo total"
+        string="Costo total",
+        compute="get_costototal"
     )
 
     tareas_ids = fields.One2many(
@@ -49,13 +53,35 @@ class OrdenTrabajo(models.Model):
         string="Tareas",
     )
 
+    @api.model
+    def create(self, vals):
+        if vals.get('name', 'OT000X') == 'OT000X':
+            vals['name'] = self.env['ir.sequence'].next_by_code(
+                'ops4g_orden_trabajo'
+            ) or 'OT000X'
+        return super(OrdenTrabajo, self).create(vals)
+
     @api.one
     @api.depends('tareas_ids')
-    def get_costo_horashombre(self):
+    def get_subcostos(self):
         for record in self:
             if len(record.tareas_ids) > 0:
                 costo_horas_hombre = 0
-                print("\n ***************Iniciando")
+                costo_recursos = 0
                 for tarea in record.tareas_ids:
+                    costo_recusos_tarea = tarea.tarea_id.costo_recursos
+                    if costo_recusos_tarea:
+                        costo_recursos += costo_recusos_tarea
                     costo_horas_hombre += tarea.importe
                 record.costo_horas_hombre = costo_horas_hombre
+                record.costo_recursos = costo_recursos
+
+    @api.multi
+    @api.depends('costo_horas_hombre', 'costo_recursos')
+    def get_costototal(self):
+        for record in self:
+            if record.costo_recursos > 0 and record.costo_horas_hombre > 0:
+                costo_total = record.costo_recursos + record.costo_horas_hombre
+                record.costo_total = costo_total
+            else:
+                record.costo_total = 0.00

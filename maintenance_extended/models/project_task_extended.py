@@ -25,7 +25,6 @@ class ProjectTaskExtended(models.Model):
     def getcostorecursos(self):
         for record in self:
             total_recursos = 0
-            print ("Calculando el total de los recursos por registro")
             for material in record.listado_materiales_ids:
                 total_recursos += material.importe
             record.costo_recursos = total_recursos
