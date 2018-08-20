@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<template id="extended_ecommerce_products_view" inherit_id="website_sale.product">
+		<xpath expr="//div[hasclass('js_product')]" position="replace">
+			<div class="js_product" t-if="product.product_variant_ids">
+                <t t-placeholder="select">
+                  <input type="hidden" class="product_id" name="product_id" t-att-value="product.product_variant_id.id if len(product.product_variant_ids) == 1 else '0'"/>
+                  <t t-call="website_sale.variants">
+                    <t t-set="ul_class" t-value="'nav-stacked'"/>
+                  </t>
+                </t>
+                <h3>Código: <span t-field="product.default_code"/></h3>
+                <!-- Agregado el código del producto -->
+                <t t-call="website_sale.product_price"/>
+                <!-- Agregada leyenda de todos los productos son más IVA -->
+                <span>Todos los precios son mas IVA</span>
+                <p t-if="len(product.product_variant_ids) &gt; 1" class="css_not_available_msg bg-danger" style="padding: 15px;">This combination does not exist.</p>
+                <a id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#">Añadir a la cesta</a>
+              </div>
+		</xpath>
+	</template>
+</odoo>

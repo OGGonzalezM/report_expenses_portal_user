@@ -3,42 +3,52 @@
 
 	<template id="import_product_images" name="Import Product Images">
 		<t t-call="website.layout">
-			<title>Import product images</title>
-			<!-- <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/> -->
+			<title>Import product data</title>
+			<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
 			<meta charset="UTF-8"/>
 			<div class="">
 				<t t-if="is_manager">
+					<br/><br/>
 					<div class="container" id="mainContainer">
-						<div class="row">
-							<div class="text-center">
-								<h1>Import or update product images</h1>
+						<div class="col-md-8 col-md-offset-2">
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<div class="text-center">
+										<h3>Import or update product images</h3>
+									</div>
+								</div>
+													
+								<div class="panel-body">
+									<div class="col-md-8 col-md-offset-2" id="formContainer">
+														
+										<form action="/website/import_images" id="formImages" method="post" class="s_website_form form-horizontal container mt32" enctype="multipart/form-data">
+														
+											<input type="hidden" id="csrf_token" name="csrf_token" t-att-value="request.csrf_token()" />
+														
+											<div class="row">
+												<div class="form-group">
+													<label for="product_images">Select images</label>
+													<input type="file" name="product_images" id="product_images" class="form-control" multiple=""/>
+												</div>
+											</div>
+														
+											<div class="row text-right">
+												<div class="form-group" id="sendProductImages">
+													<button class="btn btn-primary btn-lg hidden" id="btnSendImages">
+														Import images
+													</button>
+												</div>
+											</div>
+														
+										</form>
+									</div>
+								</div>
 							</div>
 						</div>
-					
-						<div class="col-md-8 col-md-offset-2" id="formContainer">
-					
-							<form action="/website/import_images" id="formImages" method="post" class="s_website_form form-horizontal container mt32" enctype="multipart/form-data">
-					
-								<input type="hidden" id="csrf_token" name="csrf_token" t-att-value="request.csrf_token()" />
-					
-								<div class="row">
-									<div class="form-group">
-										<label for="product_images">Select images</label>
-										<input type="file" name="product_images" id="product_images" class="form-control" multiple=""/>
-									</div>
-								</div>
-					
-								<div class="row text-right">
-									<div class="form-group" id="sendProductImages">
-										<button class="btn btn-primary btn-lg hidden" id="btnSendImages">
-											Import images
-										</button>
-									</div>
-								</div>
-					
-							</form>
-						</div>
 					</div>
+
+					<br/>
+					<br/>
 				</t>
 				<t t-else="">
 					<div class="container">

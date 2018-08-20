@@ -18,7 +18,6 @@ class ImportProductImages(http.Controller):
         inventory_manager_group = http.request.env.ref('stock.group_stock_manager')
         if user.id in inventory_manager_group.users.ids:
             is_manager = True
-            print ("Usuario admin de inventario")
         return http.request.render('import_product_images.import_product_images',
                                    {'is_manager': is_manager}
                                    )
